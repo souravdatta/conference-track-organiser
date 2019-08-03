@@ -14,7 +14,7 @@
 ;; Clojure Ate Scala (on my project), starting at: 14:15 (duration 45 min)
 ;; Ruby on Rails: Why We Should Move On, starting at: 15:0 (duration 60 min)
 ;; Ruby on Rails Legacy App Maintenance, starting at: 16:0 (duration 60 min)
-;; Networking, starting at: 17:0 (duration 0 min)
+;; Networking, starting at: 17:0 (duration 30 min)
 
 ;; Track 2
 ;; Overdoing it in Python, starting at: 9:0 (duration 45 min)
@@ -29,9 +29,9 @@
 ;; Sit Down and Write, starting at: 14:35 (duration 30 min)
 ;; Woah, starting at: 15:5 (duration 30 min)
 ;; Lua for the Masses, starting at: 15:35 (duration 30 min)
-;; Networking, starting at: 16:5 (duration 0 min)
+;; Networking, starting at: 16:5 (duration 30 min)
 
-(defparameter *input1*
+(Defparameter *input1*
   '(("Writing Fast Tests Against Enterprise Rails" 60)
     ("Overdoing it in Python" 45)
     ("Lua for the Masses" 30)
@@ -55,6 +55,7 @@
 (defconstant MORNING-SLOT 180)
 (defconstant EVENING-SLOT 240)
 (defconstant LUNCH 60)
+(defconstant NETWORKING 30)
 
 (defun process-talks (input)
   "Process input for lightning and then sort DESC according to talk length"
@@ -81,22 +82,23 @@
           (setf slot fit)
           (push talk slot-talks))))
     (list slot-talks
-          (set-difference talks slot-talks :test #'equal))))
+          (set-difference (process-talks talks) slot-talks :test #'equal))))
 
 (defun make-track (talks)
   "Make a track and return the remaining talks"
   (let* ((first-slot (make-slot MORNING-SLOT (process-talks talks)))
-         (lunch-slot (list (list "Lunch" LUNCH)))
-         (networking-slot '(("Networking" 0)))
+         (lunch-slot (list 'lunch (list "Lunch" LUNCH)))
+         (networking-slot (list 'networking (list "Networking" NETWORKING)))
          (second-slot (make-slot EVENING-SLOT (process-talks (second first-slot)))))
     (list
-     (append (first first-slot)
-             lunch-slot
-             (first second-slot)
-             networking-slot)
+     (list (cons 'morning (first first-slot))
+           lunch-slot
+           (cons 'evening (first second-slot))
+           networking-slot)
      (process-talks
-      (set-difference talks (append (first first-slot)
-                                    (first second-slot)) :test #'equal)))))
+      (set-difference (process-talks talks)
+                      (append (first first-slot)
+                              (first second-slot)) :test #'equal)))))
 
 (defun make-all-tracks (talks &optional (tracks nil))
   "Make all tracks consuming all talks"
@@ -119,12 +121,19 @@
 (defun format-track (track)
   (let ((next-time '(9 0))
         (talks nil))
-    (dolist (talk track)
-      (push (list (first talk)
-                  next-time
-                  (second talk))
-            talks)
-      (setq next-time (add-minutes next-time (second talk))))
+    (dolist (slot track)
+      (cond
+        ((eq (first slot) 'morning) (setq next-time '(9 0)))
+        ((eq (first slot) 'lunch) (setq next-time '(12 0)))
+        ((eq (first slot) 'evening) (setq next-time '(13 0)))
+        ((eq (first slot) 'networking) (when (< (first next-time) 16)
+                                         (setq next-time '(4 0)))))
+      (dolist (talk (cdr slot))
+        (push (list (first talk)
+                    next-time
+                    (second talk))
+              talks)
+        (setq next-time (add-minutes next-time (second talk)))))
     (reverse talks)))
 
 (defun format-tracks (tracks)
