@@ -31,7 +31,7 @@
 ;; Lua for the Masses, starting at: 15:35 (duration 30 min)
 ;; Networking, starting at: 16:5 (duration 30 min)
 
-(Defparameter *input1*
+(defparameter *input1*
   '(("Writing Fast Tests Against Enterprise Rails" 60)
     ("Overdoing it in Python" 45)
     ("Lua for the Masses" 30)
