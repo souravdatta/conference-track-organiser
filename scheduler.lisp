@@ -3,6 +3,34 @@
 ;; greedy best fit search.
 ;; After loading this file eval: (print-all-tracks (make-all-tracks *input1*))
 
+;; Output:
+;; Track 1
+;; Rails Magic, starting at: 9:0 (duration 60 min)
+;; Communicating Over Distance, starting at: 10:0 (duration 60 min)
+;; Writing Fast Tests Against Enterprise Rails, starting at: 11:0 (duration 60 min)
+;; Lunch, starting at: 12:0 (duration 60 min)
+;; User Interface CSS in Rails Apps, starting at: 13:0 (duration 30 min)
+;; Pair Programming vs Noise, starting at: 13:30 (duration 45 min)
+;; Clojure Ate Scala (on my project), starting at: 14:15 (duration 45 min)
+;; Ruby on Rails: Why We Should Move On, starting at: 15:0 (duration 60 min)
+;; Ruby on Rails Legacy App Maintenance, starting at: 16:0 (duration 60 min)
+;; Networking, starting at: 17:0 (duration 0 min)
+
+;; Track 2
+;; Overdoing it in Python, starting at: 9:0 (duration 45 min)
+;; Ruby Errors from Mismatched Gem Versions, starting at: 9:45 (duration 45 min)
+;; Common Ruby Errors, starting at: 10:30 (duration 45 min)
+;; Accounting-Driven Development, starting at: 11:15 (duration 45 min)
+;; Lunch, starting at: 12:0 (duration 60 min)
+;; Rails for Python Developers, starting at: 13:0 (duration 5 min)
+;; A World Without HackerNews, starting at: 13:5 (duration 30 min)
+;; Ruby vs. Clojure for Back-End Development, starting at: 13:35 (duration 30 min)
+;; Programming in the Boondocks of Seattle, starting at: 14:5 (duration 30 min)
+;; Sit Down and Write, starting at: 14:35 (duration 30 min)
+;; Woah, starting at: 15:5 (duration 30 min)
+;; Lua for the Masses, starting at: 15:35 (duration 30 min)
+;; Networking, starting at: 16:5 (duration 0 min)
+
 (defparameter *input1*
   '(("Writing Fast Tests Against Enterprise Rails" 60)
     ("Overdoing it in Python" 45)
